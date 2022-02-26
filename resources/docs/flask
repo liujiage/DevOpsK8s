@@ -1,0 +1,94 @@
+1.the first web project with Flask
+https://flask.palletsprojects.com/en/2.0.x/quickstart/
+2.if your want have more then one app who to configuration
+https://www.e-learn.cn/topic/2654399
+3.How to use the log
+https://www.scalyr.com/blog/getting-started-quickly-with-flask-logging/
+4.official demo
+https://github.com/pallets/flask/tree/main/examples/tutorial
+5.ui
+http://layout.jquery-dev.com/demos/simple.html
+6.jstree
+https://www.jstree.com/docs/html/
+https://www.jstree.com/api/#/
+7.how to cancle a event
+https://api.jquery.com/event.stopimmediatepropagation/
+$('#html').on("select_node.jstree", function (event, data ) {
+            var t = $('#html').jstree(true);
+		    t.deselect_node(data.node);
+            event.stopImmediatePropagation();
+            return;
+}
+8.how to use jquery ajax
+https://flask.palletsprojects.com/en/2.0.x/patterns/jquery/
+<script>
+  $SCRIPT_ROOT = {{ request.script_root|tojson }};
+</script>
+<script>
+  $(function() {
+    $('a#calculate').bind('click', function() {
+      $.getJSON($SCRIPT_ROOT + '/_add_numbers', {
+        a: $('input[name="a"]').val(),
+        b: $('input[name="b"]').val()
+      }, function(data) {
+        $("#result").text(data.result);
+      });
+      return false;
+    });
+  });
+</script>
+$.ajax({type : 'GET',url:$SCRIPT_ROOT + '/deploy/service/'+dv,async:false,success:function(result){
+	   $("#deployStatus").html("Deploy status is running ..... ");
+}});
+9.how to get folders and files from a root's folder
+https://www.cnblogs.com/WebLinuxStudy/p/11954829.html
+10.flask websocket
+https://flask-socketio.readthedocs.io/en/latest/getting_started.html
+11.jquery ui window
+https://craftpip.github.io/jquery-confirm/
+https://github.com/craftpip/jquery-confirm
+file:///Users/liujiage/Downloads/jquery-confirm-v3.3.4/index.html
+12.jquery ui text
+https://github.com/victorjonsson/jquery-editable
+https://codepen.io/anon/pen/OMWJOY?editors=1111
+https://github.com/chinchang/screenlog.js
+13.install and deploy a flask app
+https://realpython.com/flask-by-example-part-1-project-setup/
+#export all python3 common dependency
+python3 -m pip freeze > requirements.txt
+pip install -r requirements.txt #import dependency
+#export this object dependency only
+pip install pipreqs
+cd project root
+pipreqs ./ --encoding=utf-8
+14.How to upgrade python
+https://tech.serhatteker.com/post/2019-12/upgrade-python38-on-ubuntu/
+sudo apt update -y
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install python3.8
+15.Jquery UI table
+https://datatables.net/extensions/scroller/examples/styling/jqueryui.html
+https://blog.csdn.net/quwenzhe/article/details/53585529
+16.Flask security
+https://pythonhosted.org/Flask-Security/
+https://speckyboy.com/login-pages-html5-css/
+17.Flask api Authentication AOP
+https://flask.palletsprojects.com/en/2.0.x/api/
+@app.before_request
+def load_user():
+    if "user_id" in session:
+        g.user = db.session.get(session["user_id"])
+
+Issues
+E: Couldn't find any package by regex 'python3.8'
+sudo apt install software-properties-common
+
+Running a Flask server
+$ export FLASK_APP=hello
+$ flask run    #--host=0.0.0.0  add --host all ips can be visited
+ * Running on http://127.0.0.1:5000/
+
+$ export FLASK_APP=flaskr
+$ export FLASK_ENV=development
+$ flask run

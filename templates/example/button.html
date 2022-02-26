@@ -1,0 +1,60 @@
+<!doctype html>
+<title>History</title>
+<head>
+	<link rel="stylesheet" href="{{ url_for('static', filename='bundled.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='jquery-confirm.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='bundled.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-confirm.min.js') }}"></script>
+</head>
+<button class="example1 btn btn-primary">example alert</button>
+<script type="text/javascript">
+                                $('.example1').on('click', function(){
+                                    $.alert({
+                                        title: 'Alert!',
+                                        content: 'Simple alert!',
+                                    });
+                                });
+                            </script>
+<button class="example2 btn btn-primary">example prompt</button>
+<script type="text/javascript">
+$('.example2').on('click', function(){
+$.confirm({
+    title: 'Prompt!',
+    content: '' +
+    '<form action="" class="formName">' +
+    '<div class="form-group">' +
+    '<label>Enter something here</label>' +
+    '<input type="text" placeholder="Your name" class="name form-control" required />' +
+    '</div>' +
+    '</form>',
+    buttons: {
+        formSubmit: {
+            text: 'Submit',
+            btnClass: 'btn-blue',
+            action: function () {
+                var name = this.$content.find('.name').val();
+                if(!name){
+                    $.alert('provide a valid name');
+                    return false;
+                }
+                $.alert('Your name is ' + name);
+            }
+        },
+        cancel: function () {
+            //close
+        },
+    },
+    onContentReady: function () {
+        // bind to events
+        var jc = this;
+        this.$content.find('form').on('submit', function (e) {
+            // if the user submits the form by pressing enter in the field.
+            e.preventDefault();
+            jc.$$formSubmit.trigger('click'); // reference the button and click it
+        });
+    }
+});
+});
+</script>
+
+<h1>this is a history page</h1>

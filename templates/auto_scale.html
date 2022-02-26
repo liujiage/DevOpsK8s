@@ -1,0 +1,39 @@
+<html>
+<body>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit-table.css') }}">
+    <!-- confirm window -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <!-- jquery -->
+  	<script type="text/javascript" src="{{ url_for('static', filename='jquery-latest.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.editable.min.js') }}"></script>
+</head>
+<script>
+      $SCRIPT_ROOT = {{ request.script_root|tojson }};
+    </script>
+<div id="container">
+     <h1>Setting auto scale parameters: </h1>
+  <form method="post" action="{{ url_for('auto_scale_setting') }}">
+      <table>
+          <tr>
+              <td> Pod's deploy name:</td>
+              <td> <input type="text" name="deployName" value="{{ setting.deployName }}" > </td>
+          </tr>
+          <tr>
+              <td> Minimum number of Pod:</td>
+              <td> <input type="text" name="miniSize" value="{{ setting.miniSize }}" > </td>
+          </tr>
+          <tr>
+              <td> Maximum number of Pod:</td>
+              <td> <input type="test" name="maxSize" value="{{ setting.maxSize }}" > </td>
+          </tr>
+          <tr>
+              <td> Memory usage exceeds(M): </td>
+              <td> <input type="test" name="memExc" value="{{ setting.memExc }}" > </td>
+          </tr>
+      </table>
+    <p class="submit"><input type="submit" name="commit" value="Submit"></p>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+awk
+https://www.cnblogs.com/ginvip/p/6352157.html
+cat deploy.log
+deploy tiny service at date Wed Aug 18 09:33:34 UTC 2021
+deploy tiny service at date Wed Aug 18 09:33:34 UTC 2021
+.....
+awk -F "date" '{if(NR>=0 && NR <=5) print $1}' deploy.log
+deploy tiny service at
+deploy tiny service at
+deploy tiny service at
+deploy tiny service at
+deploy tiny service at
+awk 'BEGIN {count=0;print "[start] user count is ",count} {count++;if(NR >=0 && NR <=5) print $0;} END {print "[end] user count is",count}' deploy.log
+ll | awk 'BEGIN{size=0;} {size=size+$5;} END{print "total size is ",size/1024,"B"}'
+
+sudo apt install net-tools
+https://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html
+netstat -apn|grep 24808
+netstat -tunlp|grep 24808
+netstat -nat |awk '{print $6}'|sort|uniq -c
+  1 ESTABLISHED
+  1 Foreign
+  8 LISTEN
+  1 established)
+#top ranking 10 access website ip address
+awk '{print $1}' access.log |sort|uniq -c|sort -nr|head -10
+
+lsof (显示文件开启的进程)
+lsof -i:8080 #
+lsof -p 进程id #显示进程打开那些文件
+lsof -u username #查看用户打开那些文件
+lsof 目录名 #显示谁在使用这个目录
+lsof file.txt #显示打开文件的进程
+
+ps aux | grep cassandra #a show all users, u show user/owner, x show processes not attached to a terminal*

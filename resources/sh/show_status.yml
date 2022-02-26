@@ -1,0 +1,14 @@
+- name: show service status
+  hosts: all
+  serial: 1
+  max_fail_percentage: 100
+  vars:
+    ansible_become_pass: password
+    ansible_user: mozat
+    ansible_ssh_pass: password
+  tasks:
+      - name: get status
+        shell: "{{service_dir}}{{service_startup_script}} status"
+        ignore_errors: yes
+        register: zk_result
+      - debug: var=zk_result.stdout_lines

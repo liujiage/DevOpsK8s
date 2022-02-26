@@ -1,0 +1,56 @@
+#log {
+            width: 98%;
+            padding: 1%;
+            color: white;
+            font-size: 100%;
+            height: 90%;
+            background-color: black;
+        }
+#log-cluster {
+            width: 98%;
+            padding: 1%;
+            color: white;
+            font-size: 100%;
+            height: 85%;
+            background-color: black;
+        }
+#log-nodes {
+            width: 98%;
+            padding: 1%;
+            color: white;
+            font-size: 100%;
+            height: 85%;
+            background-color: black;
+        }
+#log-deploy {
+            width: 98%;
+            padding: 1%;
+            color: white;
+            font-size: 100%;
+            height: 85%;
+            background-color: black;
+        }
+#log-services {
+            width: 98%;
+            padding: 1%;
+            color: white;
+            font-size: 100%;
+            height: 85%;
+            background-color: black;
+        }
+#log-pods {
+            width: 98%;
+            padding: 1%;
+            color: white;
+            font-size: 100%;
+            height: 85%;
+            background-color: black;
+        }
+#log-status {
+            width: 98%;
+            padding: 1%;
+            color: white;
+            font-size: 100%;
+            height: 85%;
+            background-color: black;
+        }

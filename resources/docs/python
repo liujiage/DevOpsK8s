@@ -1,0 +1,8 @@
+
+
+issues
+https://towardsdatascience.com/how-to-fix-modulenotfounderror-and-importerror-248ce5b69b1c
+How to fix ModuleNotFoundError and ImportError?
+export PYTHONPATH="${PYTHONPATH}:/Users/liujiage/PycharmProjects/DevOps"
+
+The python, avoid named the package in the same name, even they have different parent's package.

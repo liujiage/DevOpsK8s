@@ -1,0 +1,27 @@
+<html>
+<body>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit-table.css') }}">
+    <!-- confirm window -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='button.css') }}">
+    <!-- websocket -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+            crossorigin="anonymous"></script>
+    <!-- jquery -->
+  	<script type="text/javascript" src="{{ url_for('static', filename='jquery-latest.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery.editable.min.js') }}"></script>
+</head>
+<script>
+      $SCRIPT_ROOT = {{ request.script_root|tojson }};
+    </script>
+<div id="container">
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nodes.js') }}"></script>
+    <button id="nodes_query" class="btn btn-primary" onclick="query();">Query</button>
+    <hr />
+    <em>Nodes->Query result:</em> <font id="queryStatus" color="blue"></font> <br />
+    <textarea id="log-nodes"></textarea>
+</div>
+</body>
+</html>

@@ -1,0 +1,177 @@
+- name: Deployment "{{service}}" services
+  hosts: "{{service}}"
+  serial: 1
+  serial:
+   - "{{concurrent_1}}"
+  max_fail_percentage: "{{max_fail_percent}}"
+  vars:
+    service_version: "{{ version }}"
+    concurrent_1: 100%
+    max_fail_percent: 30
+  tasks:
+      - name: creating directories
+        file:
+          path: "{{item}}"
+          state: directory
+          mode: 0755
+        with_items:
+          - "{{service_dir}}"
+        tags:
+           - always
+      - name: clear old services dir
+        shell: "rm -rf {{service_dir}}*"
+        become: true
+        tags: clear_install
+      - name: check version file existence
+        stat: path="{{ service_dir }}version"
+        register: version_exist
+        tags:
+           - always
+      - name: Downloading git configs
+        git:
+          repo: "{{repo_url}}"
+          dest: "{{config_dir}}"
+          #version: dp
+          version: "{{git_version}}"
+          update: yes
+          clone: yes
+          force: yes
+        tags:
+           - always
+
+      - name: synchronizing configs
+        shell: rsync -arzP --delete "{{config_dir}}/{{git_config_dir}}/" "{{service_dir}}"
+        tags:
+           - always
+
+      - name: get previous_version
+        shell: "cat {{ service_dir }}version |grep -E '{{service_version}}' >/dev/null && echo yes || echo no"
+        register:  version_same
+        tags:
+           - always
+
+      - debug: var=version_same.stdout_lines
+        tags:
+           - always
+
+      - name: Downloading JAR ZIP File
+        s3:
+          aws_access_key: "AKIAJELVCDCTWUFNOYQA"
+          aws_secret_key: "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"
+          bucket: "{{s3_bucket_name}}"
+          object: "{{s3_folder_name}}{{ service_version }}/{{dist_filename}}"
+          dest: "{{ service_dir }}{{dist_filename}}"
+          mode: get
+        #when: previous_version.stdout != "{{ service_version }}"
+        when: version_same.stdout == "no"
+        tags:
+           - always
+
+      - name: make script excutable
+        file:
+          path: "{{service_dir}}{{item}}"
+          owner: mozat
+          group: mozat
+          mode: 0755
+        with_items:
+          - "{{service_startup_script}}"
+          - "{{zk_deregister_script}}"
+          - "{{install_script}}"
+          - "wrapper"
+        tags:
+           - always
+
+      - name: clear previous unarchieve folder
+        shell: "rm -rf {{service_dir}}{{app_folder}} && rm -rf {{service_dir}}lib && rm -rf {{service_dir}}build"
+        become: true
+        when: version_same.stdout == "no"
+        tags:
+           - always
+
+      - name: unzip JAR file
+        unarchive:
+          src: "{{ service_dir }}{{dist_filename}}"
+          dest: "{{service_dir}}"
+          remote_src: true
+        when: version_same.stdout == "no"
+        tags:
+           - always
+      - name: delete previous lib and build folder
+        shell: "rm -rf {{ service_dir }}{{item}}"
+        become: true
+        with_items:
+          - "lib"
+          - "build"
+        tags:
+           - always
+
+      - name: create soft link for jars folder lib and build
+        become: true
+        file:
+          src: "{{service_dir}}{{app_folder}}/{{item}}"
+          dest: "{{ service_dir }}{{item}}"
+          state: link
+        with_items:
+          - "lib"
+          - "build"
+        tags:
+           - always
+
+      - name: update version
+        shell: echo "{{service_version}}" > "{{ service_dir }}version"
+        tags:
+           - always
+
+      - name: check if service is running or not
+        shell: "{{service_dir}}{{service_startup_script}} status || echo 1"
+        register: status
+        tags:
+           - always
+      - debug: var=status.stdout_lines
+        tags:
+           - always
+
+      - name: "deregister service {{app_folder}}"
+        shell: "{{service_dir}}{{zk_deregister_script}}"
+        when: zk_deregister_script != "wrapper" and status.stdout.find('PID') != -1
+        become: true
+        register: zk_result
+        tags:
+           - always
+      - debug: var=zk_result.stdout_lines
+        tags:
+           - always
+
+      - name: see app name
+        shell: grep wrapper.app {{service_dir}}conf/wrapper.conf |cut -d= -f2
+        register: app_name
+      - debug: var=app_name.stdout_lines
+
+      - name: "service to kill"
+        shell: jps -m|grep {{app_name.stdout}}|wc -l
+        become: true
+        register: kill_list
+        tags:
+          - always
+      - debug: var=kill_list.stdout_lines
+
+      - name: "stop service and wrapper"
+        #shell: ps -ef|grep `jps -m|grep {{app_name.stdout}}|grep -v 'logstash'|awk '{print $1}'`|grep -v grep|awk '{print $3,$2}'|xargs -n1 kill -9
+        shell: jps -m|grep {{app_name.stdout}}|grep -v 'logstash'|awk '{print $1}'| while read pid; do ps -ef|grep $pid|grep -v grep|awk '{print $3,$2}'|xargs kill -9;done
+        become: true
+        register: kill_result
+        #when: kill_list.stdout|int < 2
+        tags:
+          - always
+      #- debug: var=kill_result.stdout_lines
+
+      - name: "restart service {{app_folder}}"
+        shell: "{{service_dir}}{{service_startup_script}} restart"
+        become: true
+        register: restart_result
+        #when: kill_list.stdout|int < 2
+        tags:
+           - always
+      - debug: var=restart_result.stdout_lines
+        tags:
+           - always

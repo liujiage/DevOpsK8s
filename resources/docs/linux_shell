@@ -1,0 +1,72 @@
+dpkg #manage of os apps
+https://blog.csdn.net/yang3572/article/details/80991108
+expect-dev #automates interactive applications(development)
+
+#linux command
+1.|| and &&
+#when the system installed expect-dev
+#if not found "expect-dev2" then print "it is not install"
+(dpkg -l |grep expect-dev2 > /dev/null) || echo "it is not install"
+(dpkg -l |grep expect-dev > /dev/null) && echo "it is not install"
+2.[] #it same like if
+#[] must with a space around. if the folder "history2" is not exists than create it.
+[ ! -d "history2" ] && mkdir history2
+3.$() and ``, ${}
+time=$(date +%Y%m%d%H%M%S)
+log=$time"-"$service_name"-"$version
+aws s3 cp history/$log  s3://loops-ansible-history/dp/
+https://www.cnblogs.com/chengd/p/7803664.html
+4.$1~$n,$$,$?...
+linux中shell变量$#,$@,$0,$1,$2的含义解释:
+变量说明:
+$$
+Shell本身的PID（ProcessID）
+$!
+Shell最后运行的后台Process的PID
+$?
+最后运行的命令的结束代码（返回值）
+$-
+使用Set命令设定的Flag一览
+$*
+所有参数列表。如"$*"用「"」括起来的情况、以"$1 $2 … $n"的形式输出所有参数。
+$@
+所有参数列表。如"$@"用「"」括起来的情况、以"$1" "$2" … "$n" 的形式输出所有参数。
+$#
+添加到Shell的参数个数
+$0
+Shell本身的文件名
+$1～$n
+添加到Shell的各参数值。$1是第1参数、$2是第2参数…。
+5.if and case，[expression]
+https://ryanstutorials.net/bash-scripting-tutorial/bash-if-statements.php
+https://blog.csdn.net/openme_openwrt/article/details/9766121
+6.tee
+time=$(date +%Y%m%d%H%M%S)
+service_name=$1
+version=$(echo $2 |grep -Eo '[0-9]+')
+log=$time"-"$service_name"-"$version
+bash -c "unbuffer $cmd" |tee history/$log
+https://www.runoob.com/linux/linux-comm-tee.html
+7.for
+for ((i=1; i<=100; i ++))
+do
+   echo $i
+done
+for i in {1..100}
+do
+   echo $i
+done
+8.how to use sshpass
+sshpass -p 'password' ssh -o StrictHostKeyChecking=no 10.30.0.60
+sshpass -p 'Dgq\$kmzsUsUvUbiRF' ssh -o StrictHostKeyChecking=no 10.30.0.60 'ls -l'
+sshpass -p "Dgq\$kmzsUsUvUbiRF" ssh mozat@10.30.0.77 "ls -l"
+
+mac install sshpass
+https://www.cnblogs.com/lutt/p/12079483.html
+
+issues
+https://blog.csdn.net/wang_chaodong/article/details/115348893
+sshpass Permission denied, please try again.
+sshpass -p "aaaD$e23434ererDE" ssh mozat@10.30.0.77 "ls -l"
+cause password a have $ change it to \$
+sshpass -p "aaaD\$e23434ererDE" ssh mozat@10.30.0.77 "ls -l"

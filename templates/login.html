@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+<script>
+      $SCRIPT_ROOT = {{ request.script_root|tojson }};
+</script>
+<div class="login">
+  <h1>Login to DevOps Web Console</h1>
+  <form method="post" action="{{ url_for('login') }}">
+    <p>LDAP Authentication</p>
+    <p>UserName: <input type="text" name="username" value="" placeholder="Username"></p>
+    <p>Password: <input type="password" name="password" value="" placeholder="Password"></p>
+    <p class="remember_me">
+      <label>
+        <input type="checkbox" name="remember_me" id="remember_me">
+        Remember me on this computer
+      </label>
+    </p>
+    <p class="submit"><input type="submit" name="commit" value="Login"></p>
+  </form>
+</div>
+<div class="login-help">
+  <p>Forgot your password? <a href="#">Click here to reset it</a>.</p>
+</div>
+</body>
+</html>

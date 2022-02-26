@@ -1,0 +1,15 @@
+https://docs.datastax.com/en/developer/python-driver/3.25/getting_started/
+brew services start cassandra
+brew services stop cassandrs
+cqlsh
+create keyspace test with replication = {'class':'SimpleStrategy', 'replication_factor':1};
+describe keyspaces;
+select * from system_schema.keyspaces;
+use test
+CREATE TABLE emp(
+   emp_id int PRIMARY KEY,
+   emp_name text,
+   emp_city text,
+   emp_sal varint,
+   emp_phone varint
+   );

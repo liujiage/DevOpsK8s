@@ -1,0 +1,15 @@
+[tiny]
+10.30.0.49
+10.30.0.31
+
+[tiny:vars]
+s3_bucket_name=rings-deployment-package
+s3_folder_name=/loops-release/tiny/
+service_dir=/home/mozat/services/tiny/
+app_folder=tiny
+dist_filename=tiny-dist.tar.gz
+git_config_dir=tiny
+service_startup_script=tiny.sh
+install_script=install_dist_release.sh
+zk_deregister_script=wrapper
+service_port=2080
